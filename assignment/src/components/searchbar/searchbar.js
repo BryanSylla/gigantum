@@ -23,9 +23,7 @@ handleInputChange = event => {
    handleFormSubmit = event => {
     event.preventDefault();
 
-      API.getWeatherData(this.state.minTemp,this.state.maxTemp,this.state.maxPrecip)
-        .then(res => console.log(res));
-        //.catch(err => console.log(err));
+      API.getWeatherData();
     
   };
 
