@@ -28,26 +28,25 @@ return formattedTime;
 },
 
 	getWeatherData: function (){
-		let weatherData;
- axios.get(proxyurl+'https://api.darksky.net/forecast/'+secretKey+'/'+lattitude+','+longitude+'?exclude=currently,flags,minutely,daily,alerts&extend=hourly')
+			
+let currentTimeStamp = Math.floor(Date.now() / 1000);
+console.log(currentTimeStamp);
+ return axios.get(proxyurl+'https://api.darksky.net/forecast/'+secretKey+'/'+lattitude+','+longitude+','+currentTimeStamp+'?exclude=currently,flags,minutely,daily,alerts&extend=hourly')
  .then(res=> this.parseWeatherData(res))
- .then(res=> weatherData=res)
+ //.then(res=> weatherData=res)
  .catch(function (error) {
     console.log(error);
-  });;
+  });
 		
-		
-
-		return weatherData;
 	},
 
-
+//
 
 	parseWeatherData:function(weatherData){
 
 		let reformattedData=[];
 		//console.log(weatherData);
-		for(let i=7;i<weatherData.data.hourly.data.length;i=i+24){
+		for(let i=8;i<weatherData.data.hourly.data.length;i=i+24){
 			let dataPoint= {};
 
 			dataPoint.date=this.timeConverter(weatherData.data.hourly.data[i].time).date
@@ -56,9 +55,9 @@ return formattedTime;
 			dataPoint.temp1=weatherData.data.hourly.data[i].temperature;
 			dataPoint.precip1=(weatherData.data.hourly.data[i].precipProbability)*100;
 
-			dataPoint.time2=this.timeConverter(weatherData.data.hourly.data[i+8].time);
-			dataPoint.temp2=weatherData.data.hourly.data[i+8].temperature;
-			dataPoint.precip2=(weatherData.data.hourly.data[i+8].precipProbability)*100;
+			dataPoint.time2=this.timeConverter(weatherData.data.hourly.data[i+9].time);
+			dataPoint.temp2=weatherData.data.hourly.data[i+9].temperature;
+			dataPoint.precip2=(weatherData.data.hourly.data[i+9].precipProbability)*100;
 
 			reformattedData.push(dataPoint);
 
