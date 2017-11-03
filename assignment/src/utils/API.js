@@ -28,42 +28,57 @@ return formattedTime;
 },
 
 	getWeatherData: function (){
-			
+			let reformattedData=[];
+			let i=0;
 let currentTimeStamp = Math.floor(Date.now() / 1000);
 console.log(currentTimeStamp);
- return axios.get(proxyurl+'https://api.darksky.net/forecast/'+secretKey+'/'+lattitude+','+longitude+','+currentTimeStamp+'?exclude=currently,flags,minutely,daily,alerts&extend=hourly')
- .then(res=> this.parseWeatherData(res))
- //.then(res=> weatherData=res)
- .catch(function (error) {
+
+ let recursionFunction=()=> (axios.get(proxyurl+'https://api.darksky.net/forecast/'+secretKey+'/'+lattitude+','+longitude+','+currentTimeStamp+'?exclude=currently,flags,minutely,daily,alerts&extend=hourly')
+ .then(res=> this.parseWeatherData(res)).then(res=> {
+
+ 	reformattedData.push(res);
+ 	currentTimeStamp+=86400;
+ 	i+=1;
+ 	//console.log(reformattedData);
+ 	if(i<7){
+ 		return recursionFunction();
+ 	}
+ 	
+ else{
+ 	//console.log(reformattedData);
+		return reformattedData;
+ }
+
+ }).catch(function (error) {
     console.log(error);
-  });
-		
-	},
+  })		
+	);
+
+ return recursionFunction();
+},
 
 //
 
 	parseWeatherData:function(weatherData){
 
-		let reformattedData=[];
-		//console.log(weatherData);
+		
+		let dataPoint= {};
 		for(let i=8;i<weatherData.data.hourly.data.length;i=i+24){
-			let dataPoint= {};
+			
 
 			dataPoint.date=this.timeConverter(weatherData.data.hourly.data[i].time).date
 
 			dataPoint.time1=this.timeConverter(weatherData.data.hourly.data[i].time);
 			dataPoint.temp1=weatherData.data.hourly.data[i].temperature;
-			dataPoint.precip1=(weatherData.data.hourly.data[i].precipProbability)*100;
+			dataPoint.precip1=Math.floor((weatherData.data.hourly.data[i].precipProbability)*100);
 
 			dataPoint.time2=this.timeConverter(weatherData.data.hourly.data[i+9].time);
 			dataPoint.temp2=weatherData.data.hourly.data[i+9].temperature;
-			dataPoint.precip2=(weatherData.data.hourly.data[i+9].precipProbability)*100;
-
-			reformattedData.push(dataPoint);
+			dataPoint.precip2=Math.floor((weatherData.data.hourly.data[i+9].precipProbability)*100);
 
 		}
-		console.log(reformattedData);
-			return reformattedData;
+		//console.log(dataPoint);
+			return dataPoint;
 
 	}
 
