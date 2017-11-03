@@ -23,9 +23,6 @@ overflow: hidden;
     overflow: hidden;
 }
 
-
-
-
 @media (max-width: 768px) {
     #sidebar {
         margin-left: -250px;
@@ -50,8 +47,6 @@ p {
     line-height: 1.7em;
     color: #999;
 }
-
-
 
 #sidebar {
 
