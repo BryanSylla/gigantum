@@ -11,16 +11,14 @@ class App extends Component {
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
       <div className="App">
+  
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">To Bike Or To Metro That Is The Question</h1>
         </header>
-
-        
-        <Searchbar />
-
-
        
+        <Searchbar />
+      
       </div>
       </MuiThemeProvider>
     );

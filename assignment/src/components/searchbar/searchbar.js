@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 //import TimePicker from 'material-ui/TimePicker';
 import Divider from 'material-ui/Divider';
+import Drawer from 'material-ui/Drawer';
 import {List, ListItem} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import API from "../../utils/API";
 import { Input, FormBtn } from "../../components/Form";
 import Paper from 'material-ui/Paper';
-import { Col, Row} from "../../components/Grid";
+import {  Row, Col } from 'react-bootstrap'
 import {BikeOrMetro} from "../BikeOrMetro";
 import "./searchbar.css";
 
@@ -17,11 +18,33 @@ class Searchbar extends Component{
     	minTemp:"",
     	maxTemp: "",
     	maxPrecip: "",
-    	weatherData:""
+    	weatherData:"",
     	//time1:{},
     	//time2:{}
-    
+    	styleSidebar : {
+  			margin: '16px 32px 16px 0',
+  			padding: '150px'
+		},
+
+		styleForm : {
+  			padding: '20px'
+		},
+
+		styleMain : {
+			backgroundSize: 'cover'
+		},
+
+		image:'https://nancieteresa.files.wordpress.com/2015/01/grunge-travel-background-239421341.jpg',
+
+		settings: {
+			minTemp:"",
+    		maxTemp: "",
+    		maxPrecip: "",
+		}
+    	
   };
+
+  
 
 	componentDidUpdate(){
     	console.log(this.state.weatherData);//used to check if weatherData state was succesfully and correctly updated
@@ -41,11 +64,19 @@ class Searchbar extends Component{
 
       	API.getWeatherData()
       	.then(res=>this.setState({
-    		minTemp:"",
-    		maxTemp: "",
-    		maxPrecip: "",
     		weatherData:res
   		}))
+      	.then(res=>this.setState({
+    		settings: {
+			minTemp:this.state.minTemp,
+    		maxTemp: this.state.maxTemp,
+    		maxPrecip: this.state.maxPrecip,
+			},
+			minTemp:"",
+    		maxTemp: "",
+    		maxPrecip: "",
+  		}))
+      	
        
     
   	};
@@ -56,15 +87,15 @@ class Searchbar extends Component{
 
 			<div className="wrapper">
 				<Row>
-					<Col size="md-4">
+					<Col md={4}>
 					
-    				<nav id="sidebar">
-        				 <div className="sidebar-header">
-           					{this.state.minTemp && this.state.maxTemp && this.state.maxPrecip ?<h2>minTemp: {this.state.minTemp}°F maxTemp: {this.state.maxTemp}°F maxPrecip: {this.state.maxPrecip}%</h2>: <h3>Settings</h3> }
+    				<Drawer width={390} style={this.state.styleSidebar} >
+           					{this.state.settings.minTemp && this.state.settings.maxTemp && this.state.settings.maxPrecip ?<div><h2>minTemp: {this.state.settings.minTemp}°F</h2><h2> maxTemp: {this.state.settings.maxTemp}°F</h2><h2> maxPrecip: {this.state.settings.maxPrecip}%</h2></div>: <h3>Settings</h3> }
              				<Divider />
-        				 </div>
-
-        				 <form>
+        				 
+             				
+        				 <form style={this.state.styleForm}>
+        				 
               			 	<Input
                 				value={this.state.minTemp}
                 				onChange={this.handleInputChange}
@@ -113,12 +144,13 @@ class Searchbar extends Component{
                 				name="time2"    
     						/>*/}
     					</form>
-    				 </nav>
-
+    					
+    				</Drawer>
+    			
 					</Col>
 				</Row>
 				<Row>
-					<Col size="md-12">
+					<Col md={8}>
     				<div id="content" >
     
      					{this.state.weatherData.length ? (
@@ -141,7 +173,7 @@ class Searchbar extends Component{
                 					)}
               					</List>
               				</Paper>
-            ) : (<h3>Go ahead and hit the search button with your preferences</h3>)
+            ) : (<div style = {{backgroundImage: `url(${this.state.image})`}} id="content" ><h3 >Go ahead and hit the search button with your preferences</h3></div>)
      					}
        
     				</div>

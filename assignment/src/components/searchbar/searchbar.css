@@ -1,26 +1,30 @@
 .wrapper {
     display: flex;
     align-items: stretch;
-overflow: hidden;
- min-height: 100vh;
+    overflow: hidden;
+    min-height: 100vh;
 
 }
 
 #sidebar {
-    min-width: 420px;
+    min-width: 200px;
     max-width: 420px;
     min-height: 100vh;
     max-height:300vh;
-     overflow: hidden;
+    overflow: hidden;
+    padding: 20px;
+     position:absolute;
    
 }
 
 #content {
-   
+    height: auto;
     min-height: 100vh;
-    min-width: 77.85vw;
+    min-width: 85vw;
     max-width: 77.85vw;
     overflow: hidden;
+    background-size: 100% 100%;
+    overflow: auto;
 }
 
 @media (max-width: 768px) {
@@ -46,14 +50,6 @@ p {
     font-weight: 300;
     line-height: 1.7em;
     color: #999;
-}
-
-#sidebar {
-
-    background: black;
-    color: #fff;
-    transition: all 0.3s;
-     padding: 20px;
 }
 
 #sidebar .sidebar-header {
